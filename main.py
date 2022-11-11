@@ -1,3 +1,5 @@
+"""FastAPI app definition"""
+import uvicorn
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -5,7 +7,8 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"Larissa": "Aceita casar comigo? ❤️"}
+    """Root route which returns just a message"""
+    return {"greeting": "Hello World!"}
 
 
 if __name__ == "__main__":
