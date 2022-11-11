@@ -19,4 +19,4 @@ jobs:
           cache: 'pip' # caching pip dependencies
       - run: pip install -r requirements.txt
       - name: Run Unit Tests
-        run:  PYTHONPATH=${PWD}:${PYTHONPATH} pytest -s -vv --failed-first tests
+        run:  PYTHONPATH=${PWD}:${PYTHONPATH} pytest -s -x -vv --failed-first tests
