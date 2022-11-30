@@ -2,13 +2,11 @@
 import uvicorn
 from fastapi import FastAPI
 
+from src.root.view import router as root_router
+
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    """Root route which returns just a message"""
-    return {"greeting": "Bye World!"}
+app.include_router(root_router)
 
 
 if __name__ == "__main__":
