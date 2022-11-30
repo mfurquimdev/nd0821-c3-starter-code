@@ -19,4 +19,4 @@ async def root(fail: bool = False):
     if fail:
         raise HTTPException(status_code=404, detail="Fail flag is True")
 
-    return JSONResponse({"greeting": "Hello World!"})
+    return JSONResponse({"greeting": "Bye Mars!"})
