@@ -1,5 +1,7 @@
-from sklearn.metrics import fbeta_score, precision_score, recall_score
-
+"""Module defining model training, metrics computation, and inferece."""
+from sklearn.metrics import fbeta_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -12,12 +14,12 @@ def train_model(X_train, y_train):
         Training data.
     y_train : np.array
         Labels.
+
     Returns
     -------
     model
         Trained machine learning model.
     """
-
     pass
 
 
@@ -44,7 +46,7 @@ def compute_model_metrics(y, preds):
 
 
 def inference(model, X):
-    """ Run model inferences and return the predictions.
+    """Run model inferences and return the predictions.
 
     Inputs
     ------
