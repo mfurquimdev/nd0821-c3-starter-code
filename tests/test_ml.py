@@ -43,7 +43,9 @@ class TestComputeModelMetrics:
         assert round(fbeta, 3) == 0.5
 
 
-class TestSliceValidation:
+class TestData:
+    """Test data in shape and value's average in categorical features"""
+
     def test_data_shape(self, data):
         """If your data is assumed to have no null values then this is a valid test."""
         assert data.shape == data.dropna().shape, "Dropping null changes shape."
