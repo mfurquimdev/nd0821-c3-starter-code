@@ -2,6 +2,7 @@
 -- at least test if any ML functions return the expected type."""
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from src.ml.data import process_data
 from src.ml.model import compute_model_metrics
 from src.ml.model import inference
 from src.ml.model import train_model
@@ -41,6 +42,25 @@ class TestComputeModelMetrics:
         assert precision == 1
         assert round(recall, 3) == 0.333
         assert round(fbeta, 3) == 0.5
+
+    def test_education_metrics(self, data, model, encoder, lb, cat_features):
+        """Test metrics on each different education level on the data set"""
+        for ed_value in data["education"].unique():
+            X, y, _, _ = process_data(
+                data[data["education"] == ed_value],
+                categorical_features=cat_features,
+                label="salary",
+                training=False,
+                encoder=encoder,
+                lb=lb,
+            )
+            y_pred = inference(model, X)
+
+            precision, recall, fbeta = compute_model_metrics(y, y_pred)
+
+            assert precision >= 0.88
+            assert recall >= 0.56
+            assert fbeta >= 0.70
 
 
 class TestData:

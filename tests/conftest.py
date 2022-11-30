@@ -63,11 +63,10 @@ def y_pred():
     return np.loadtxt(filepath, delimiter=",")
 
 
-@fixture(scope="module")
+@fixture(scope="session")
 def model():
     """Return model"""
-
-    print("\nRetrieving model from github for test purposes")
+    print("\nRetrieving model from s3 for test purposes")
     url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
 
     data = dvc.api.read("model/model.pkl", repo=url, mode="rb")
@@ -77,19 +76,47 @@ def model():
     return model
 
 
-@fixture(scope="module")
+@fixture(scope="session")
+def encoder():
+    """Return encoder"""
+    print("\nRetrieving encoder from s3 for test purposes")
+    url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
+
+    data = dvc.api.read("model/encoder.pkl", repo=url, mode="rb")
+    encoder = pickle.loads(data)
+    print("Encoder retrieved")
+
+    return encoder
+
+
+@fixture(scope="session")
+def lb():
+    """Return encoder"""
+    print("\nRetrieving label binarizer from s3 for test purposes")
+    url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
+
+    data = dvc.api.read("model/label_binarizer.pkl", repo=url, mode="rb")
+    lb = pickle.loads(data)
+    print("Label binarizer retrieved")
+
+    return lb
+
+
+@fixture(scope="session")
 def data():
     """Return CSV data"""
-    print("\nRetrieving model from github for test purposes")
+    print("\nRetrieving csv data from s3 for test purposes")
     url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
 
     with dvc.api.open("data/census.csv", repo=url) as f:
         data = pd.read_csv(f)
 
+    print("Data retrieved")
+
     return data
 
 
-@fixture(scope="module")
+@fixture(scope="session")
 def cat_features():
     """Categorical Features"""
     return [
@@ -104,7 +131,7 @@ def cat_features():
     ]
 
 
-@fixture(scope="module")
+@fixture(scope="session")
 def num_features():
     """Numerical Features tuple"""
     num_feat = namedtuple("NumericalFeature", ["name", "min", "max"])
