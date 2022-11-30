@@ -80,10 +80,13 @@ def model():
 @fixture(scope="module")
 def data():
     """Return CSV data"""
-    data_filename = "census.csv"
-    data_dir = "data"
-    data_filepath = Path(data_dir, data_filename)
-    return pd.read_csv(data_filepath)
+    print("\nRetrieving model from github for test purposes")
+    url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
+
+    with dvc.api.open("data/census.csv", repo=url) as f:
+        data = pd.read_csv(f)
+
+    return data
 
 
 @fixture(scope="module")
