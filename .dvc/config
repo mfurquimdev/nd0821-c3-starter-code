@@ -1,5 +1,5 @@
 [core]
-    remote = github
+    remote = storage
     autostage = true
-['remote "github"']
-    url = https://github.com/mfurquimdev/nd0821-c3-starter-code/tree/model/model
+['remote "storage"']
+    url = s3://ml-model-fastapi/dvcstore
