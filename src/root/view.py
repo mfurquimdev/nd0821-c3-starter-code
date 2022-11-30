@@ -12,11 +12,13 @@ router = APIRouter()
     "/",
     summary="Return basic greeting",
     response_description="Greeting in form of a dictionary",
-    response_model=Dict,
+    response_model=dict,
 )
 async def root(fail: bool = False):
     """Root route which returns just a message"""
     if fail:
         raise HTTPException(status_code=404, detail="Fail flag is True")
+
+    import src.train.train_model  # noqa
 
     return JSONResponse({"greeting": "Hello World!"})

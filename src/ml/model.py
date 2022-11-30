@@ -1,4 +1,8 @@
 """Module defining model training, metrics computation, and inferece."""
+from pathlib import Path
+
+import joblib
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
@@ -20,7 +24,9 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    pass
+    rfc = RandomForestClassifier(max_depth=25, n_estimators=30, max_features=14)
+
+    return rfc.fit(X_train, y_train)
 
 
 def compute_model_metrics(y, preds):
@@ -33,6 +39,7 @@ def compute_model_metrics(y, preds):
         Known labels, binarized.
     preds : np.array
         Predicted labels, binarized.
+
     Returns
     -------
     precision : float
@@ -42,11 +49,13 @@ def compute_model_metrics(y, preds):
     fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
     precision = precision_score(y, preds, zero_division=1)
     recall = recall_score(y, preds, zero_division=1)
+
     return precision, recall, fbeta
 
 
 def inference(model, X):
-    """Run model inferences and return the predictions.
+    """
+    Run model inferences and return the predictions.
 
     Inputs
     ------
@@ -54,9 +63,43 @@ def inference(model, X):
         Trained machine learning model.
     X : np.array
         Data used for prediction.
+
     Returns
     -------
     preds : np.array
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
+
+
+def save_model(model, encoder, lb):
+    """
+    Save model, encoder and label binarizer.
+
+    Inputs
+    ------
+    model : ???
+        Trained machine learning model.
+    encoder : sklearn.preprocessing._encoders.OneHotEncoder
+        Trained sklearn OneHotEncoder, only used if training=False.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained sklearn LabelBinarizer, only used if training=False.
+
+    Returns
+    -------
+    None
+    """
+    model_dir = "model"
+
+    model_filename = "model.sav"
+    model_filepath = Path(model_dir, model_filename)
+
+    encoder_filename = "encoder.sav"
+    encoder_filepath = Path(model_dir, encoder_filename)
+
+    label_binarizer_filename = "label_binarizer.sav"
+    label_binarizer_filepath = Path(model_dir, label_binarizer_filename)
+
+    joblib.dump(model, model_filepath)
+    joblib.dump(encoder, encoder_filepath)
+    joblib.dump(lb, label_binarizer_filepath)
