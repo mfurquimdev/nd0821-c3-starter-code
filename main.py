@@ -8,7 +8,7 @@ app = FastAPI()
 @app.get("/")
 async def root():
     """Root route which returns just a message"""
-    return {"greeting": "Hello World!"}
+    return {"greeting": "Bye World!"}
 
 
 if __name__ == "__main__":
