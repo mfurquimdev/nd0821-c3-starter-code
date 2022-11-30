@@ -1,10 +1,12 @@
 """Basic configuration for testing FastAPI"""
+import pickle
 from pathlib import Path
 
 import dvc.api
-import joblib
+import IPython
 import numpy as np
 import pandas as pd
+from dvc.api import DVCFileSystem
 from fastapi.testclient import TestClient
 from main import app
 from pytest import fixture
@@ -65,14 +67,34 @@ def model():
     """Return model"""
 
     print("\nRetrieving model from github for test purposes")
-    with dvc.api.open(
-        repo="https://github.com/mfurquimdev/nd0821-c3-starter-code",
-        path="model/model.sav",
-        rev="model",
-        mode="rb",
-    ) as fd:
-        model = joblib.load(fd)
+    url = "https://github.com/mfurquimdev/nd0821-c3-starter-code"
 
+    data = dvc.api.read("model/model.pkl", repo=url, mode="rb")
+    model = pickle.loads(data)
     print("Model retrieved")
 
     return model
+
+
+@fixture(scope="module")
+def data():
+    """Return CSV data"""
+    data_filename = "census.csv"
+    data_dir = "data"
+    data_filepath = Path(data_dir, data_filename)
+    return pd.read_csv(data_filepath)
+
+
+@fixture(scope="module")
+def cat_features():
+    """Categorical Features"""
+    return [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]

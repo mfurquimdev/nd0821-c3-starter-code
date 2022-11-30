@@ -1,7 +1,7 @@
 """Module defining model training, metrics computation, and inferece."""
+import pickle
 from pathlib import Path
 
-import joblib
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score
 from sklearn.metrics import precision_score
@@ -92,15 +92,20 @@ def save_model(model, encoder, lb):
     model_dir = "model"
     Path(model_dir).mkdir(parents=True, exist_ok=True)
 
-    model_filename = "model.sav"
+    model_filename = "model.pkl"
     model_filepath = Path(model_dir, model_filename)
 
-    encoder_filename = "encoder.sav"
+    encoder_filename = "encoder.pkl"
     encoder_filepath = Path(model_dir, encoder_filename)
 
-    label_binarizer_filename = "label_binarizer.sav"
+    label_binarizer_filename = "label_binarizer.pkl"
     label_binarizer_filepath = Path(model_dir, label_binarizer_filename)
 
-    joblib.dump(model, model_filepath)
-    joblib.dump(encoder, encoder_filepath)
-    joblib.dump(lb, label_binarizer_filepath)
+    with open(model_filepath, "wb") as f:
+        pickle.dump(model, f)
+
+    with open(encoder_filepath, "wb") as f:
+        pickle.dump(encoder, f)
+
+    with open(label_binarizer_filepath, "wb") as f:
+        pickle.dump(lb, f)

@@ -1,8 +1,11 @@
 #!/bin/env python
 """FastAPI app definition"""
 import os
+import pickle
 
+import dvc.api
 import uvicorn
+from dvc.api import DVCFileSystem
 from fastapi import FastAPI
 from src.root.view import router as root_router
 
@@ -18,4 +21,6 @@ app.include_router(root_router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    import src.train.train_model
+
+    # uvicorn.run(app, host="0.0.0.0", port=5000)

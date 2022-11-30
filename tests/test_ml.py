@@ -24,7 +24,7 @@ class TestInference:
         y_pred = inference(model, X_test)
         assert isinstance(y_pred, np.ndarray)
 
-        expected_output = np.array([0, 0])
+        expected_output = np.array([0, 0, 0, 1, 0])
         assert np.array_equal(y_pred, expected_output)
 
 
@@ -38,6 +38,19 @@ class TestComputeModelMetrics:
         assert isinstance(recall, float)
         assert isinstance(fbeta, float)
 
-        assert precision == 0.5
-        assert recall == 1
-        assert round(fbeta, 3) == 0.667
+        assert precision == 1
+        assert round(recall, 3) == 0.333
+        assert round(fbeta, 3) == 0.5
+
+
+# class TestSliceValidation:
+#     def test_data_shape(self, data):
+#         """If your data is assumed to have no null values then this is a valid test."""
+#         assert data.shape == data.dropna().shape, "Dropping null changes shape."
+
+#     def test_slice_averages(self, data, cat_features):
+#         """Test to see if our mean per categorical slice is in the range 1.5 to 2.5."""
+#         numeric_feat = set(data.columns) - set(cat_features)
+#         for cat_feat in data[cat_features].unique():
+#             avg_value = data[data[cat_features] == cat_feat][numeric_feat].mean()
+#             assert 2.5 > avg_value > 1.5, f"For {cat_feat}, average of {avg_value} not between 2.5 and 3.5."
