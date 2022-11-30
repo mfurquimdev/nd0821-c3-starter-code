@@ -90,6 +90,7 @@ def save_model(model, encoder, lb):
     None
     """
     model_dir = "model"
+    Path(model_dir).mkdir(parents=True, exist_ok=True)
 
     model_filename = "model.sav"
     model_filepath = Path(model_dir, model_filename)
