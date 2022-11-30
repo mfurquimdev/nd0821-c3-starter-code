@@ -3,3 +3,4 @@
     autostage = true
 ['remote "storage"']
     url = s3://ml-model-fastapi/dvcstore
+    region = us-east-1
