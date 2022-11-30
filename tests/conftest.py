@@ -1,6 +1,8 @@
 """Basic configuration for testing FastAPI"""
 from pathlib import Path
 
+import dvc.api
+import joblib
 import numpy as np
 from fastapi.testclient import TestClient
 from main import app
@@ -50,25 +52,26 @@ def y_test():
 
 
 @fixture(scope="class")
-def y_infer():
+def y_pred():
     """Return y_pred"""
     filename = "y_pred.csv"
     filepath = Path(test_dir, data_dir, filename)
     return np.loadtxt(filepath, delimiter=",")
 
 
-@fixture(scope="class")
+@fixture(scope="module")
 def model():
-    """Return y_pred"""
-    from dvc.api import DVCFileSystem
+    """Return model"""
 
-    model_dir = Path("test", "model")
-    fs = DVCFileSystem(model_dir)
-    import IPython
+    print("\nRetrieving model from github for test purposes")
+    with dvc.api.open(
+        repo="https://github.com/mfurquimdev/nd0821-c3-starter-code",
+        path="model/model.sav",
+        rev="model",
+        mode="rb",
+    ) as fd:
+        model = joblib.load(fd)
 
-    IPython.embed()
-    exit(1)
+    print("Model retrieved")
 
-    filename = "y_pred.csv"
-    filepath = Path(test_dir, data_dir, filename)
-    return np.loadtxt(filepath, delimiter=",")
+    return model
