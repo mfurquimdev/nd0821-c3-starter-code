@@ -4,6 +4,7 @@ from pathlib import Path
 import dvc.api
 import joblib
 import numpy as np
+import pandas as pd
 from fastapi.testclient import TestClient
 from main import app
 from pytest import fixture
