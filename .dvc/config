@@ -1,5 +1,5 @@
 [core]
-    remote = localremote
+    remote = github
     autostage = true
-['remote "localremote"']
-    url = ../data
+['remote "github"']
+    url = https://github.com/mfurquimdev/nd0821-c3-starter-code/tree/model/model
