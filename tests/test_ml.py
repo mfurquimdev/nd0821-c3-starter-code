@@ -43,14 +43,18 @@ class TestComputeModelMetrics:
         assert round(fbeta, 3) == 0.5
 
 
-# class TestSliceValidation:
-#     def test_data_shape(self, data):
-#         """If your data is assumed to have no null values then this is a valid test."""
-#         assert data.shape == data.dropna().shape, "Dropping null changes shape."
+class TestSliceValidation:
+    def test_data_shape(self, data):
+        """If your data is assumed to have no null values then this is a valid test."""
+        assert data.shape == data.dropna().shape, "Dropping null changes shape."
 
-#     def test_slice_averages(self, data, cat_features):
-#         """Test to see if our mean per categorical slice is in the range 1.5 to 2.5."""
-#         numeric_feat = set(data.columns) - set(cat_features)
-#         for cat_feat in data[cat_features].unique():
-#             avg_value = data[data[cat_features] == cat_feat][numeric_feat].mean()
-#             assert 2.5 > avg_value > 1.5, f"For {cat_feat}, average of {avg_value} not between 2.5 and 3.5."
+    def test_slice_averages(self, data, cat_features, num_features):
+        """Test to see if our mean per categorical slice is in the range specified on the fixture."""
+        for cat_feat in cat_features:
+            for val_feat in data[cat_feat].unique():
+                for num_feat, min_val, max_val in num_features:
+                    avg_val_feat = data[data[cat_feat] == val_feat][num_feat].mean()
+
+                    assert (
+                        min_val <= avg_val_feat <= max_val
+                    ), f"For {cat_feat}, {val_feat} average of {avg_val_feat} in {num_feat} not between {min_val} and {max_val}."

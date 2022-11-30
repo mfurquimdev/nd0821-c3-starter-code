@@ -1,5 +1,6 @@
 """Basic configuration for testing FastAPI"""
 import pickle
+from collections import namedtuple
 from pathlib import Path
 
 import dvc.api
@@ -97,4 +98,17 @@ def cat_features():
         "race",
         "sex",
         "native-country",
+    ]
+
+
+@fixture(scope="module")
+def num_features():
+    """Numerical Features tuple"""
+    num_feat = namedtuple("NumericalFeature", ["name", "min", "max"])
+
+    return [
+        num_feat("hours-per-week", 28, 53),
+        num_feat("age", 20, 59),
+        num_feat("fnlgt", 27882, 295329),
+        num_feat("education-num", 1, 16),
     ]
