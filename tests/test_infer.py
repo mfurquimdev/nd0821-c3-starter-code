@@ -27,6 +27,64 @@ class TestInfer:
         assert r.status_code == 200
         assert r.json() == {"salary": "<=50K"}
 
+    def test_infer_post_wrong_education(self, client):
+        """Test if root is returning the expected greeting."""
+        data = {
+            "age": 17,
+            "education": "4th-6th",
+            "capital_gain": 1077.64,
+            "capital_loss": 87.30,
+            "education_num": 10,
+            "fnlgt": 189778.40,
+            "hours_per_week": 40,
+            "marital_status": "Married-civ-spouse",
+            "native_country": "Canada",
+            "occupation": "Farming-fishing",
+            "race": "White",
+            "relationship": "Own-child",
+            "sex": "Male",
+            "workclass": "Self-emp-inc",
+        }
+        r = client.post("/infer", json=data)
+
+        assert r.status_code == 422
+
+        wrong_education_response = {
+            "detail": [
+                {
+                    "loc": ["body", "education"],
+                    "msg": (
+                        "value is not a valid enumeration member; "
+                        "permitted: 'Assoc-acdm', 'Assoc-voc', 'Bachelors', 'Doctorate', 'HS-grad', 'Masters', "
+                        "'10th', '11th', '12th', '1st-4th', '5th-6th', '7th-8th', '9TH', 'Preschool', "
+                        "'Prof-school', 'Some-college'"
+                    ),
+                    "type": "type_error.enum",
+                    "ctx": {
+                        "enum_values": [
+                            "Assoc-acdm",
+                            "Assoc-voc",
+                            "Bachelors",
+                            "Doctorate",
+                            "HS-grad",
+                            "Masters",
+                            "10th",
+                            "11th",
+                            "12th",
+                            "1st-4th",
+                            "5th-6th",
+                            "7th-8th",
+                            "9TH",
+                            "Preschool",
+                            "Prof-school",
+                            "Some-college",
+                        ]
+                    },
+                }
+            ]
+        }
+        assert r.json() == wrong_education_response
+
     def test_infer_post_missing_age(self, client):
         """Test if root is returning the expected greeting."""
         data = {
