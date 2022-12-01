@@ -34,10 +34,6 @@ cat_features = [
     "native-country",
 ]
 
-import IPython
-
-IPython.embed()
-exit(1)
 
 X_train, y_train, encoder, lb = process_data(
     train,
