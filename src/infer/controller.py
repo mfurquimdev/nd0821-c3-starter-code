@@ -9,6 +9,10 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import OneHotEncoder
 from src.infer.model import InferRequest
 from src.infer.model import InferResponse
+from src.ml.data import process_data
+from src.ml.model import inference
+
+from .enum import Salary
 
 
 def infer_salary(infer_request: InferRequest) -> InferResponse:
@@ -16,12 +20,39 @@ def infer_salary(infer_request: InferRequest) -> InferResponse:
     df = _create_df_from_infer_request(infer_request)
     model, encoder, lb = _load_model()
 
-    import IPython
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
 
-    IPython.embed()
-    exit(1)
+    X, _, _, _ = process_data(
+        df,
+        categorical_features=cat_features,
+        training=False,
+        encoder=encoder,
+        lb=lb,
+    )
 
-    pass
+    y = inference(model, X)
+
+    def inference_to_salary(y) -> Salary:
+        if y not in (0, 1):
+            raise InvalidValueError(y, Salary)
+
+        if y == 0:
+            return Salary.LEQ_50K
+
+        return Salary.GT_50K
+
+    salary = inference_to_salary(y)
+
+    return InferResponse(salary=salary)
 
 
 def _load_model() -> (RandomForestClassifier, OneHotEncoder, LabelBinarizer):
@@ -74,4 +105,7 @@ def _create_df_from_infer_request(infer_request: InferRequest) -> pd.DataFrame:
         "native_country",
     ]
 
-    return pd.DataFrame([infer_dict])[column_order]
+    df = pd.DataFrame([infer_dict])[column_order]
+    df.rename(columns={col: col.replace("_", "-") for col in column_order}, inplace=True)
+
+    return df
