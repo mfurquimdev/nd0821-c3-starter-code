@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi import APIRouter
 from fastapi import HTTPException
+from src.infer.controller import infer_salary
 from src.infer.model import InferRequest
 from src.infer.model import InferResponse
 from starlette.responses import JSONResponse
@@ -19,8 +20,8 @@ router = APIRouter(
     response_description="Array of predictions whether the salary is greater than 50K",
     response_model=InferResponse,
 )
-async def root(request: InferRequest) -> InferResponse:
+def root(infer_request: InferRequest) -> InferResponse:
     """Root inference route which returns just a message"""
-    print(request)
+    infer_response = infer_salary(infer_request)
 
-    return InferResponse()
+    return infer_response

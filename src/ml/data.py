@@ -1,3 +1,4 @@
+"""Module describing process data function"""
 import numpy as np
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import OneHotEncoder
@@ -5,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 def process_data(
     X,
-    categorical_features=[],
+    categorical_features=list,
     label=None,
     training=True,
     encoder=None,

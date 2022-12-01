@@ -9,17 +9,24 @@ from pydantic import Field
 from pydantic import validator
 
 from .enum import Education
+from .enum import MaritalStatus
+from .enum import NativeCountry
+from .enum import Occupation
+from .enum import Race
+from .enum import Relationship
+from .enum import Salary
+from .enum import Sex
+from .enum import Workclass
 from .exception import InvalidCategoryValueError
 
 
 class InferResponse(BaseModel):
     """Infer response model"""
 
-    response: str = Field(
-        title="Response",
-        description="Response",
-        example="Ok!",
-        default="Ok!",
+    salary: Salary = Field(
+        title="Salary",
+        description="Salary",
+        example="<=50K",
     )
 
 
@@ -31,104 +38,88 @@ class InferRequest(BaseModel):
         description="Usually between 17 and 90.",
         example="17",
         gt=0,
+        lt=150,
     )
-    # capital_gain: int = Field(
-    #     title="Capital gain",
-    #     description="Capital gain",
-    #     example="1077.64",
-    #     gt=0,
-    # )
-    # capital_loss: int = Field(
-    #     title="Capital loss",
-    #     description="Capital loss",
-    #     example="87.30",
-    #     gt=0,
-    # )
+
+    capital_gain: float = Field(
+        title="Capital gain",
+        description="Capital gain",
+        example="1077.64",
+        gt=0,
+    )
+
+    capital_loss: float = Field(
+        title="Capital loss",
+        description="Capital loss",
+        example="87.30",
+        gt=0,
+    )
+
     education: Education = Field(
         title="Education level",
         description="Education level",
         example="5th-6th",
     )
 
-    # @validator("education")
-    # def _validate_salary(cls, education) -> Education:
-    #     if education not in [v.value for v in Education]:
-    #         raise InvalidCategoryValueError(education, Education)
-    #     return {e.value: e for e in list(Education)}[education]
+    education_num: int = Field(
+        title="Education number",
+        description="Education number",
+        example="10",
+        gt=0,
+    )
 
-    # education_num: int = Field(
-    #     title="Education number",
-    #     description="Education number",
-    #     example="10",
-    #     gt=0,
-    # )
-    # fnlgt: int = Field(
-    #     title="fnlgt",
-    #     description="fnlgt",
-    #     example="189778.40",
-    #     gt=0,
-    # )
-    # hours_per_week: int = Field(
-    #     title="Hours per week",
-    #     description="Hours per week",
-    #     example="40",
-    #     gt=0,
-    # )
-    # marital_status: int = Field(
-    #     title="Marital status",
-    #     description="Marital status",
-    #     example="Married-civ-spouse",
-    # )
-    # native_country: int = Field(
-    #     title="Native country",
-    #     description="Native country",
-    #     example="Canada",
-    # )
-    # occupation: int = Field(
-    #     title="Occupation",
-    #     description="Occupation",
-    #     example="Farming-fishing",
-    # )
-    # race: int = Field(
-    #     title="Race",
-    #     description="Race",
-    #     example="Asian-Pac-Islander",
-    # )
-    # relationship: int = Field(
-    #     title="Relationship",
-    #     description="Relationship",
-    #     example="Own-child",
-    # )
-    # salary: int = Field(
-    #     title="Salary",
-    #     description="Salary",
-    #     example="<=50K",
-    # )
-    # sex: int = Field(
-    #     title="Sex",
-    #     description="Sex",
-    #     example="Male",
-    # )
-    # workclass: int = Field(
-    #     title="Workclass",
-    #     description="Workclass",
-    #     example="Self-emp-inc",
-    # )
+    fnlgt: float = Field(
+        title="fnlgt",
+        description="fnlgt",
+        example="189778.40",
+        gt=0,
+    )
 
-    # @validator("salary")
-    # def _validate_salary(self, salary) -> Enum:
-    #     if salary not in [v.value for v in Salary]:
-    #         raise InvalidValueError(salary, Salary)
+    hours_per_week: int = Field(
+        title="Hours per week",
+        description="Hours per week",
+        example="40",
+        gt=0,
+    )
 
+    marital_status: MaritalStatus = Field(
+        title="Marital status",
+        description="Marital status",
+        example="Married-civ-spouse",
+    )
 
-# @validator("education")
-# def _validate_education(self, education) -> Enum:
-# Education
-# MaritalStatus
-# NativeCountry
-# Occupation
-# Race
-# Relationship
-# Salary
-# Sex
-# Workclass
+    native_country: NativeCountry = Field(
+        title="Native country",
+        description="Native country",
+        example="Canada",
+    )
+
+    occupation: Occupation = Field(
+        title="Occupation",
+        description="Occupation",
+        example="Farming-fishing",
+    )
+
+    race: Race = Field(
+        title="Race",
+        description="Race",
+        example="Asian-Pac-Islander",
+    )
+
+    relationship: Relationship = Field(
+        title="Relationship",
+        description="Relationship",
+        example="Own-child",
+    )
+
+    sex: Sex = Field(
+        title="Sex",
+        description="Sex",
+        example="Male",
+    )
+
+    workclass: Workclass = Field(
+        title="Workclass",
+        description="Workclass",
+        example="Self-emp-inc",
+    )
