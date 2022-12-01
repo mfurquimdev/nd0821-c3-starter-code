@@ -1,11 +1,13 @@
 """Module defining model training, metrics computation, and inferece."""
 import pickle
+from collections import namedtuple
 from pathlib import Path
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
+from src.ml.data import process_data
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -70,6 +72,26 @@ def inference(model, X):
         Predictions from the model.
     """
     return model.predict(X)
+
+
+def compute_metrics_on_slices(column, data, model, encoder, lb, cat_features):
+    slice_dict = {}
+    slice_metrics = namedtuple("SliceMetrics", ["precision", "recall", "fbeta"])
+    for col_value in data[column].unique():
+        X, y, _, _ = process_data(
+            data[data[column] == col_value],
+            categorical_features=cat_features,
+            label="salary",
+            training=False,
+            encoder=encoder,
+            lb=lb,
+        )
+        y_pred = inference(model, X)
+
+        precision, recall, fbeta = compute_model_metrics(y, y_pred)
+        slice_dict[col_value] = slice_metrics(precision, recall, fbeta)
+
+    return slice_dict
 
 
 def save_model(model, encoder, lb):
