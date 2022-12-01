@@ -19,6 +19,7 @@ data_dir = "data"
 data_filepath = Path(data_dir, data_filename)
 data = pd.read_csv(data_filepath)
 
+
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20)
 
@@ -32,6 +33,11 @@ cat_features = [
     "sex",
     "native-country",
 ]
+
+import IPython
+
+IPython.embed()
+exit(1)
 
 X_train, y_train, encoder, lb = process_data(
     train,
