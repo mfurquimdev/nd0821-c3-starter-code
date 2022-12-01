@@ -29,9 +29,10 @@ class TestInfer:
 
     def test_infer_post_wrong_education(self, client):
         """Test if root is returning the expected greeting."""
+        wrong_categorical_education = "4th-6th"
         data = {
             "age": 17,
-            "education": "4th-6th",
+            "education": wrong_categorical_education,
             "capital_gain": 1077.64,
             "capital_loss": 87.30,
             "education_num": 10,
@@ -119,8 +120,9 @@ class TestInfer:
 
     def test_infer_post_negative_age(self, client):
         """Test if root is returning the expected greeting."""
+        negative_age = -1
         data = {
-            "age": -1,
+            "age": negative_age,
             "education": "5th-6th",
             "capital_gain": 1077.64,
             "capital_loss": 87.30,
@@ -153,8 +155,9 @@ class TestInfer:
 
     def test_infer_post_high_age(self, client):
         """Test if root is returning the expected greeting."""
+        age_too_high = 151
         data = {
-            "age": 151,
+            "age": age_too_high,
             "education": "5th-6th",
             "capital_gain": 1077.64,
             "capital_loss": 87.30,
