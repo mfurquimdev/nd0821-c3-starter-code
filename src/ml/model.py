@@ -74,7 +74,7 @@ def inference(model, X):
     return model.predict(X)
 
 
-def compute_metrics_on_slices(column, data, model, encoder, lb, cat_features):
+def compute_metrics_on_slice(column, data, model, encoder, lb, cat_features):
     slice_dict = {}
     slice_metrics = namedtuple("SliceMetrics", ["precision", "recall", "fbeta"])
     for col_value in data[column].unique():
@@ -92,6 +92,16 @@ def compute_metrics_on_slices(column, data, model, encoder, lb, cat_features):
         slice_dict[col_value] = slice_metrics(precision, recall, fbeta)
 
     return slice_dict
+
+
+def compute_metrics_on_slices(data, model, encoder, lb, cat_features):
+    """Compute metrics on all categorical features"""
+    category_dict = {}
+    for cat_feat in cat_features:
+        slice_dict = compute_metrics_on_slice(cat_feat, data, model, encoder, lb, cat_features)
+        category_dict[cat_feat] = slice_dict
+
+    return category_dict
 
 
 def save_model(model, encoder, lb):

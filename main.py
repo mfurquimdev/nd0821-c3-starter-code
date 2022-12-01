@@ -21,4 +21,6 @@ app.include_router(root_router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    import src.train.train_model
+
+    # uvicorn.run(app, host="0.0.0.0", port=5000)
