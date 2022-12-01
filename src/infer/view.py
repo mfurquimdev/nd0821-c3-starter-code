@@ -10,7 +10,7 @@ from starlette.responses import JSONResponse
 
 router = APIRouter(
     prefix="/infer",
-    tags=["inference", "prediction"],
+    tags=["inference"],
 )
 
 
