@@ -4,6 +4,30 @@
 class TestInfer:
     """Test /infer endpoint"""
 
+    def test_infer_post_success(self, client):
+        """Test if root is returning the expected greeting."""
+        data = {
+            "age": 17,
+            "education": "5th-6th",
+            "capital_gain": 1077.64,
+            "capital_loss": 87.30,
+            "education_num": 10,
+            "fnlgt": 189778.40,
+            "hours_per_week": 40,
+            "marital_status": "Married-civ-spouse",
+            "native_country": "Canada",
+            "occupation": "Farming-fishing",
+            "race": "White",
+            "relationship": "Own-child",
+            "sex": "Male",
+            "workclass": "Self-emp-inc",
+        }
+        r = client.post("/infer", json=data)
+
+        assert r.status_code == 200
+
+        assert r.json() == {"salary": "<=50K"}
+
     def test_infer_post_empty_json(self, client):
         """Test if root is returning the expected greeting."""
         data = {}
