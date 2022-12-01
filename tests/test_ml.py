@@ -3,7 +3,7 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from src.ml.data import process_data
-from src.ml.model import compute_metrics_on_slices
+from src.ml.model import compute_metrics_on_slice
 from src.ml.model import compute_model_metrics
 from src.ml.model import inference
 from src.ml.model import train_model
@@ -46,7 +46,7 @@ class TestComputeModelMetrics:
 
     def test_education_metrics(self, data, model, encoder, lb, cat_features):
         """Test metrics for education slice"""
-        ed_dict = compute_metrics_on_slices("education", data, model, encoder, lb, cat_features)
+        ed_dict = compute_metrics_on_slice("education", data, model, encoder, lb, cat_features)
 
         precision_min = 0.88
         recall_min = 0.55
