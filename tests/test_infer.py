@@ -59,6 +59,74 @@ class TestInfer:
         }
         assert r.json() == missing_age_response
 
+    def test_infer_post_negative_age(self, client):
+        """Test if root is returning the expected greeting."""
+        data = {
+            "age": -1,
+            "education": "5th-6th",
+            "capital_gain": 1077.64,
+            "capital_loss": 87.30,
+            "education_num": 10,
+            "fnlgt": 189778.40,
+            "hours_per_week": 40,
+            "marital_status": "Married-civ-spouse",
+            "native_country": "Canada",
+            "occupation": "Farming-fishing",
+            "race": "White",
+            "relationship": "Own-child",
+            "sex": "Male",
+            "workclass": "Self-emp-inc",
+        }
+        r = client.post("/infer", json=data)
+
+        assert r.status_code == 422
+
+        nagative_age_response = {
+            "detail": [
+                {
+                    "ctx": {"limit_value": 0},
+                    "loc": ["body", "age"],
+                    "msg": "ensure this value is greater than 0",
+                    "type": "value_error.number.not_gt",
+                }
+            ]
+        }
+        assert r.json() == nagative_age_response
+
+    def test_infer_post_high_age(self, client):
+        """Test if root is returning the expected greeting."""
+        data = {
+            "age": 151,
+            "education": "5th-6th",
+            "capital_gain": 1077.64,
+            "capital_loss": 87.30,
+            "education_num": 10,
+            "fnlgt": 189778.40,
+            "hours_per_week": 40,
+            "marital_status": "Married-civ-spouse",
+            "native_country": "Canada",
+            "occupation": "Farming-fishing",
+            "race": "White",
+            "relationship": "Own-child",
+            "sex": "Male",
+            "workclass": "Self-emp-inc",
+        }
+        r = client.post("/infer", json=data)
+
+        assert r.status_code == 422
+
+        nagative_age_response = {
+            "detail": [
+                {
+                    "ctx": {"limit_value": 150},
+                    "loc": ["body", "age"],
+                    "msg": "ensure this value is less than 150",
+                    "type": "value_error.number.not_lt",
+                }
+            ]
+        }
+        assert r.json() == nagative_age_response
+
     def test_infer_post_empty_json(self, client):
         """Test if root is returning the expected greeting."""
         data = {}
