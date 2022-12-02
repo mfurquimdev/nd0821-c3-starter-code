@@ -5,7 +5,7 @@ class TestInfer:
     """Test /infer endpoint"""
 
     def test_infer_post_success(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that all values are correct and the infer endpoint works correctly."""
         data = {
             "age": 17,
             "education": "5th-6th",
@@ -28,7 +28,7 @@ class TestInfer:
         assert r.json() == {"salary": "<=50K"}
 
     def test_infer_post_wrong_education(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that categorical value for education is wrong."""
         wrong_categorical_education = "4th-6th"
         data = {
             "age": 17,
@@ -87,7 +87,7 @@ class TestInfer:
         assert r.json() == wrong_education_response
 
     def test_infer_post_missing_age(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that age cannot be missing."""
         data = {
             "education": "5th-6th",
             "capital_gain": 1077.64,
@@ -119,7 +119,7 @@ class TestInfer:
         assert r.json() == missing_age_response
 
     def test_infer_post_negative_age(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that age cannot be negative."""
         negative_age = -1
         data = {
             "age": negative_age,
@@ -154,7 +154,7 @@ class TestInfer:
         assert r.json() == nagative_age_response
 
     def test_infer_post_high_age(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that age cannot be too high."""
         age_too_high = 151
         data = {
             "age": age_too_high,
@@ -189,7 +189,7 @@ class TestInfer:
         assert r.json() == nagative_age_response
 
     def test_infer_post_empty_json(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that infer endpoint require each field in body's data on POST request."""
         data = {}
         r = client.post("/infer", json=data)
 
@@ -217,13 +217,13 @@ class TestInfer:
         assert r.json() == missing_fields_response
 
     def test_infer_post_empty_no_data(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that infer endpoint require data on POST request."""
         r = client.post("/infer")
         assert r.status_code == 422
         assert r.json() == {"detail": [{"loc": ["body"], "msg": "field required", "type": "value_error.missing"}]}
 
     def test_infer_get(self, client):
-        """Test if root is returning the expected greeting."""
+        """Test that infer endpoint does not allow GET requests."""
         r = client.get("/infer")
         assert r.status_code == 405
         assert r.json() == {"detail": "Method Not Allowed"}

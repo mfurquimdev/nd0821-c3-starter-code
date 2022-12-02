@@ -24,5 +24,4 @@ jobs:
       - name: Download models from DVC
         run:  dvc pull
       - name: Run Unit Tests
-        run:  |
-          PYTHONPATH=${PWD}:${PYTHONPATH} pytest -s -x -vv --failed-first tests
+        run: PYTHONPATH=${PWD}:${PYTHONPATH} pytest -s -x -vv --failed-first tests
