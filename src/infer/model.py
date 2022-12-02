@@ -17,7 +17,6 @@ from .enum import Relationship
 from .enum import Salary
 from .enum import Sex
 from .enum import Workclass
-from .exception import InvalidCategoryValueError
 
 
 class InferResponse(BaseModel):

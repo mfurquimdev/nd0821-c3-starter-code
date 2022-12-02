@@ -1,43 +1,129 @@
-Working in a command line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or 2 is recommended.
+# Deploying a Machine Learning Model on Heroku with FastAPI
 
-# Environment Set up
-* Download and install conda if you don’t have it already.
-    * Use the supplied requirements file to create a new environment, or
-    * conda create -n [envname] "python=3.8" scikit-learn pandas numpy pytest jupyter jupyterlab fastapi uvicorn -c conda-forge
-    * Install git either through conda (“conda install git”) or through your CLI, e.g. sudo apt-get git.
+This is the final project for the third module of
+[Machine Learning DevOps Engineer Nanodegree](https://www.udacity.com/course/machine-learning-dev-ops-engineer-nanodegree--nd0821)
+on [Udacity](https://www.udacity.com/).
 
-## Repositories
-* Create a directory for the project and initialize git.
-    * As you work on the code, continually commit changes. Trained models you want to use in production must be committed to GitHub.
-* Connect your local git repo to GitHub.
-* Setup GitHub Actions on your repo. You can use one of the pre-made GitHub Actions if at a minimum it runs pytest and flake8 on push and requires both to pass without error.
-    * Make sure you set up the GitHub Action to have the same version of Python as you used in development.
+The objective of this project is to train a model and deploy it with a FastAPI hosted on Heroku.
 
-# Data
-* Download census.csv and commit it to dvc.
-* This data is messy, try to open it in pandas and see what you get.
-* To clean it, use your favorite text editor to remove all spaces.
+Link for the repository: https://github.com/mfurquimdev/nd0821-c3-starter-code  \
+Link for heroku app: https://mfurquim-ml-fastapi.herokuapp.com
 
-# Model
-* Using the starter code, write a machine learning model that trains on the clean data and saves the model. Complete any function that has been started.
-* Write unit tests for at least 3 functions in the model code.
-* Write a function that outputs the performance of the model on slices of the data.
-    * Suggestion: for simplicity, the function can just output the performance on slices of just the categorical features.
-* Write a model card using the provided template.
 
-# API Creation
-*  Create a RESTful API using FastAPI this must implement:
-    * GET on the root giving a welcome message.
-    * POST that does model inference.
-    * Type hinting must be used.
-    * Use a Pydantic model to ingest the body from POST. This model should contain an example.
-   	 * Hint: the data has names with hyphens and Python does not allow those as variable names. Do not modify the column names in the csv and instead use the functionality of FastAPI/Pydantic/etc to deal with this.
-* Write 3 unit tests to test the API (one for the GET and two for POST, one that tests each prediction).
+## Getting started
 
-# API Deployment
-* Create a free Heroku account (for the next steps you can either use the web GUI or download the Heroku CLI).
-* Create a new app and have it deployed from your GitHub repository.
-    * Enable automatic deployments that only deploy if your continuous integration passes.
-    * Hint: think about how paths will differ in your local environment vs. on Heroku.
-    * Hint: development in Python is fast! But how fast you can iterate slows down if you rely on your CI/CD to fail before fixing an issue. I like to run flake8 locally before I commit changes.
-* Write a script that uses the requests module to do one POST on your live API.
+At the root of the project, there's the [environment.yml](environment.yml) necessary for setting up the
+`ml_model_fastapi` environment using conda. To execute the project, install and activate the environment,
+download the dvc files and run the [main.py](main.py) script:
+
+```bash
+conda env create -f environment.yml
+conda activate ml_model_fastapi
+dvc pull
+./main.py
+```
+
+The `main.py` script will start a [uvicorn](https://www.uvicorn.org/) with the server on port 5000.
+To make a GET request, execute the following curl command.
+The response will be a dictionary with the greeting `"Hello World!"`.
+
+```bash
+curl --request GET --url http://localhost:5000
+{"greeting":"Hello World!"}
+```
+
+To make a POST request, execute the [infer_curl_request.sh](infer_curl_request.sh) script.
+The response will be a dictionary with the inferred salary.
+
+```bash
+./infer_curl_request.sh
+{"salary":"<=50K"}
+```
+
+## Unit tests
+
+To run the unit tests, execute the following command inside the `ml_model_fastapi` conda environment.
+
+```bash
+PYTHONPATH=${PWD}:${PYTHONPATH} pytest -s -vv --failed-first tests
+```
+
+The necessary fixtures are defined at [tests/conftest.py](tests/conftest.py), such as retrieving the train and test
+data, the model artifacts (trained model, encoder, and label binarizer), and the census data.
+
+There's a couple of tests for the root endpoint. One to test the success and other to test the failure case which is
+triggered by a boolean `fail` query parameter.
+
+There are four test cases for the machine learning functions: `TestTrainModel`, `TestInference`,
+`TestComputeModelMetrics`, and `TestData`.
+
+Finally, there are eight tests for the `/infer` endpoint. One that make sure that GET requests are not allowed.
+Two tests that complains if there's no data in the body. Three tests that guarantee the age (continuous feature)
+receives a value within its allowed range (non empty, non negative and less than 150). One test to guarantee the
+education (categorical feature) receives an expected value defined at [src/infer/enum.py](src/infer/enum.py). And the
+last test is a success case.
+
+## API
+
+The code for the API is defined inside the [src](src) directory and it is following the MVC architecture pattern.
+
+### Root
+
+```txt
+src/root/
+└── view.py
+```
+
+For the `/` (root) endpoint, there's only one `view.py` script which defines the greeting returned by the endpoint.
+
+
+### Infer
+
+```txt
+src/infer/
+├── controller.py
+├── enum.py
+├── model.py
+└── view.py
+```
+
+A more complete structure is defined for the `/infer` endpoint.
+There's only one POST route defined in the `view.py` and two models (Input and Output) defined in the `model.py`.
+The `controller.py` has a few more functions to help with creating the pandas DataFrame from the input data in the
+request, running the inference, and converting the inference output to the expected request response.
+Lastly, the `enum.py` defines all the possible values for the categorical features.
+
+
+## Required files
+
+The required image files described on the [rubric](https://review.udacity.com/#!/rubrics/4875/view) are located at
+[imgs](imgs):
+
+
+```txt
+imgs/
+├── continuous_deloyment.png
+├── continuous_integration.png
+├── example.png
+├── live_get.png
+└── live_post.png
+```
+
+The model_card, along with the trained model and its other artifacts (encoder and label_binarizer) are located at
+[model](model):
+
+```txt
+model/
+├── encoder.pkl
+├── label_binarizer.pkl
+├── model.pkl
+└── model_card.md
+```
+
+The dataset with its profiling are located at [data](data):
+
+```txt
+data/
+├── census.csv
+└── census.html
+```
