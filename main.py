@@ -7,6 +7,7 @@ import dvc.api
 import uvicorn
 from dvc.api import DVCFileSystem
 from fastapi import FastAPI
+
 from src.infer.view import router as infer_router
 from src.root.view import router as root_router
 
@@ -23,6 +24,4 @@ app.include_router(infer_router)
 
 
 if __name__ == "__main__":
-    # import src.train.train_model
-
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
