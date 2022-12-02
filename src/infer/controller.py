@@ -3,22 +3,23 @@ import pickle
 from enum import Enum
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import OneHotEncoder
+
+from .enum import Salary
 from src.infer.model import InferRequest
 from src.infer.model import InferResponse
 from src.ml.data import process_data
 from src.ml.model import inference
 
-from .enum import Salary
-
 
 def infer_salary(infer_request: InferRequest) -> InferResponse:
     """Make inference on requested data"""
     df = _create_df_from_infer_request(infer_request)
-    model, encoder, lb = _load_model()
+    model, encoder, lb = _load_model_artifacts()
 
     cat_features = [
         "workclass",
@@ -41,21 +42,17 @@ def infer_salary(infer_request: InferRequest) -> InferResponse:
 
     y = inference(model, X)
 
-    def inference_to_salary(y) -> Salary:
-        if y not in (0, 1):
-            raise InvalidValueError(y, Salary)
+    def inference_to_salary(y, lb) -> Salary:
+        y_list = np.array([y])
+        y_str = lb.inverse_transform(y_list)[0]
+        return Salary(y_str)
 
-        if y == 0:
-            return Salary.LEQ_50K
-
-        return Salary.GT_50K
-
-    salary = inference_to_salary(y)
+    salary = inference_to_salary(y, lb)
 
     return InferResponse(salary=salary)
 
 
-def _load_model() -> (RandomForestClassifier, OneHotEncoder, LabelBinarizer):
+def _load_model_artifacts() -> (RandomForestClassifier, OneHotEncoder, LabelBinarizer):
     """Load Random Forest Classifier model, One Hot encoder, and Label Binarizer"""
     model_dir = "model"
 
