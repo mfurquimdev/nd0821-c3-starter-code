@@ -32,11 +32,11 @@ curl --request GET --url http://localhost:5000
 {"greeting":"Hello World!"}
 ```
 
-To make a POST request, execute the [infer_curl_request.sh](infer_curl_request.sh) script.
-The response will be a dictionary with the inferred salary.
+To make a POST request, either execute the [infer_curl_request.sh](infer_curl_request.sh) or the
+[infer_request.py](infer_request.py) script. The response will be a dictionary with the inferred salary.
 
 ```bash
-./infer_curl_request.sh
+./infer_request.py
 {"salary":"<=50K"}
 ```
 
