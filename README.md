@@ -109,15 +109,15 @@ imgs/
 └── live_post.png
 ```
 
-The model_card, along with the trained model and its other artifacts (encoder and label_binarizer) are located at
-[model](model):
+The model_card is on the root directory.
+The trained model along with its other artifacts (encoder and label_binarizer) are located at [model](model):
 
 ```txt
+model_card.md
 model/
 ├── encoder.pkl
 ├── label_binarizer.pkl
-├── model.pkl
-└── model_card.md
+└── model.pkl
 ```
 
 The dataset with its profiling are located at [data](data):
