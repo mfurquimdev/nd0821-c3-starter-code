@@ -1,31 +1,61 @@
 """Test /infer endpoint."""
+import pytest
 
 
 class TestInfer:
     """Test /infer endpoint"""
 
-    def test_infer_post_success(self, client):
+    @pytest.mark.parametrize(
+        "data, response_json",
+        [
+            (
+                {
+                    "age": 17,
+                    "capital_gain": 1077.64,
+                    "capital_loss": 87.30,
+                    "education": "5th-6th",
+                    "education_num": 10,
+                    "fnlgt": 189778.40,
+                    "hours_per_week": 40,
+                    "marital_status": "Married-civ-spouse",
+                    "native_country": "Canada",
+                    "occupation": "Farming-fishing",
+                    "race": "White",
+                    "relationship": "Own-child",
+                    "sex": "Male",
+                    "workclass": "Self-emp-inc",
+                },
+                {"salary": "<=50K"},
+            ),
+            (
+                {
+                    "age": 33,
+                    "capital_gain": 0,
+                    "capital_loss": 0,
+                    "education": "Bachelors",
+                    "education_num": 13,
+                    "fnlgt": 181091,
+                    "hours_per_week": 60,
+                    "marital_status": "Married-civ-spouse",
+                    "native_country": "Iran",
+                    "occupation": "Adm-clerical",
+                    "race": "White",
+                    "relationship": "Husband",
+                    "sex": "Male",
+                    "workclass": "Private",
+                },
+                {"salary": ">50K"},
+            ),
+        ],
+    )
+    def test_infer_post_success(self, client, data, response_json):
         """Test that all values are correct and the infer endpoint works correctly."""
-        data = {
-            "age": 17,
-            "education": "5th-6th",
-            "capital_gain": 1077.64,
-            "capital_loss": 87.30,
-            "education_num": 10,
-            "fnlgt": 189778.40,
-            "hours_per_week": 40,
-            "marital_status": "Married-civ-spouse",
-            "native_country": "Canada",
-            "occupation": "Farming-fishing",
-            "race": "White",
-            "relationship": "Own-child",
-            "sex": "Male",
-            "workclass": "Self-emp-inc",
-        }
         r = client.post("/infer", json=data)
 
+        print(data)
+        print(r.json())
         assert r.status_code == 200
-        assert r.json() == {"salary": "<=50K"}
+        assert r.json() == response_json
 
     def test_infer_post_wrong_education(self, client):
         """Test that categorical value for education is wrong."""

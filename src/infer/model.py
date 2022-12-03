@@ -44,14 +44,14 @@ class InferRequest(BaseModel):
         title="Capital gain",
         description="Capital gain",
         example="1077.64",
-        gt=0,
+        ge=0,
     )
 
     capital_loss: float = Field(
         title="Capital loss",
         description="Capital loss",
         example="87.30",
-        gt=0,
+        ge=0,
     )
 
     education: Education = Field(
@@ -64,21 +64,21 @@ class InferRequest(BaseModel):
         title="Education number",
         description="Education number",
         example="10",
-        gt=0,
+        ge=0,
     )
 
     fnlgt: float = Field(
         title="fnlgt",
         description="fnlgt",
         example="189778.40",
-        gt=0,
+        ge=0,
     )
 
     hours_per_week: int = Field(
         title="Hours per week",
         description="Hours per week",
         example="40",
-        gt=0,
+        ge=0,
     )
 
     marital_status: MaritalStatus = Field(
