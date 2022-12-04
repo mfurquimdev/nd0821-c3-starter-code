@@ -7,140 +7,6 @@ Extraction was done by Barry Becker from the 1994 Census database.
 Source of data
 https://archive.ics.uci.edu/ml/datasets/census+income
 
-## Attribute Information
-
-Listing of attributes and its values
-
-### Continuous
-
-- age
-- capital-gain
-- capital-loss
-- education-num
-- fnlwgt
-- hours-per-week
-
-- salary (label):
-  - <=50K
-  - >50K
-
-### Categorical
-
-- workclass:
-  - Federal-gov
-  - Local-gov
-  - Never-worked
-  - Private
-  - Self-emp-inc
-  - Self-emp-not-inc
-  - State-gov
-  - Without-pay
-
-- education:
-  - 10th
-  - 11th
-  - 12th
-  - 1st-4th
-  - 5th-6th
-  - 7th-8th
-  - 9th
-  - Assoc-acdm
-  - Assoc-voc
-  - Bachelors
-  - Doctorate
-  - HS-grad
-  - Masters
-  - Preschool
-  - Prof-school
-  - Some-college
-
-- marital-status:
-  - Divorced
-  - Married-AF-spouse
-  - Married-civ-spouse
-  - Married-spouse-absent
-  - Never-married
-  - Separated
-  - Widowed
-
-- occupation:
-  - Adm-clerical
-  - Armed-Forces
-  - Craft-repair
-  - Exec-managerial
-  - Farming-fishing
-  - Handlers-cleaners
-  - Machine-op-inspct
-  - Other-service
-  - Priv-house-serv
-  - Prof-specialty
-  - Protective-serv
-  - Sales
-  - Tech-support
-  - Transport-moving
-
-- relationship:
-  - Husband
-  - Not-in-family
-  - Other-relative
-  - Own-child
-  - Unmarried
-  - Wife
-
-- race:
-  - Amer-Indian-Eskimo
-  - Asian-Pac-Islander
-  - Black
-  - Other
-  - White
-
-- sex:
-  - Female
-  - Male
-
-- native-country:
-  - Cambodia
-  - Canada
-  - China
-  - Columbia
-  - Cuba
-  - Dominican-Republic
-  - Ecuador
-  - El-Salvador
-  - England
-  - France
-  - Germany
-  - Greece
-  - Guatemala
-  - Haiti
-  - Holand-Netherlands
-  - Honduras
-  - Hong
-  - Hungary
-  - India
-  - Iran
-  - Ireland
-  - Italy
-  - Jamaica
-  - Japan
-  - Laos
-  - Mexico
-  - Nicaragua
-  - Outlying-US(Guam-USVI-etc)
-  - Peru
-  - Philippines
-  - Poland
-  - Portugal
-  - Puerto-Rico
-  - Scotland
-  - South
-  - Taiwan
-  - Thailand
-  - Trinadad&Tobago
-  - United-States
-  - Vietnam
-  - Yugoslavia
-
 ## Model Details
 
 The model type is a `RandomForestClassifier` with `max_depth=25`, `n_estimators=30`, and `max_features=14`.
@@ -185,3 +51,140 @@ There's more metrics for each data slice on [slice_output.txt](slice_output.txt)
 
 There is a huge imbalance on the `native-country` category.
 It would probably help if there were more data with values other than `United-States`.
+
+## Attribute Information
+
+Listing of attributes and its values
+
+### Label
+
+#### salary
+- <=50K
+- \>50K
+
+### Continuous
+
+- age
+- capital-gain
+- capital-loss
+- education-num
+- fnlwgt
+- hours-per-week
+
+
+### Categorical
+
+#### workclass
+- Federal-gov
+- Local-gov
+- Never-worked
+- Private
+- Self-emp-inc
+- Self-emp-not-inc
+- State-gov
+- Without-pay
+
+#### education
+- 10th
+- 11th
+- 12th
+- 1st-4th
+- 5th-6th
+- 7th-8th
+- 9th
+- Assoc-acdm
+- Assoc-voc
+- Bachelors
+- Doctorate
+- HS-grad
+- Masters
+- Preschool
+- Prof-school
+- Some-college
+
+#### marital-status
+- Divorced
+- Married-AF-spouse
+- Married-civ-spouse
+- Married-spouse-absent
+- Never-married
+- Separated
+- Widowed
+
+#### occupation
+- Adm-clerical
+- Armed-Forces
+- Craft-repair
+- Exec-managerial
+- Farming-fishing
+- Handlers-cleaners
+- Machine-op-inspct
+- Other-service
+- Priv-house-serv
+- Prof-specialty
+- Protective-serv
+- Sales
+- Tech-support
+- Transport-moving
+
+#### relationship
+- Husband
+- Not-in-family
+- Other-relative
+- Own-child
+- Unmarried
+- Wife
+
+#### race
+- Amer-Indian-Eskimo
+- Asian-Pac-Islander
+- Black
+- Other
+- White
+
+#### sex
+- Female
+- Male
+
+#### native-country
+- Cambodia
+- Canada
+- China
+- Columbia
+- Cuba
+- Dominican-Republic
+- Ecuador
+- El-Salvador
+- England
+- France
+- Germany
+- Greece
+- Guatemala
+- Haiti
+- Holand-Netherlands
+- Honduras
+- Hong
+- Hungary
+- India
+- Iran
+- Ireland
+- Italy
+- Jamaica
+- Japan
+- Laos
+- Mexico
+- Nicaragua
+- Outlying-US(Guam-USVI-etc)
+- Peru
+- Philippines
+- Poland
+- Portugal
+- Puerto-Rico
+- Scotland
+- South
+- Taiwan
+- Thailand
+- Trinadad&Tobago
+- United-States
+- Vietnam
+- Yugoslavia

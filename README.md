@@ -109,7 +109,7 @@ imgs/
 └── live_post.png
 ```
 
-The model_card is on the root directory.
+The [model_card.md](model_card.md) is on the root directory.
 The trained model along with its other artifacts (encoder and label_binarizer) are located at [model](model):
 
 ```txt
