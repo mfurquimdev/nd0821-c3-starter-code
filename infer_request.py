@@ -1,7 +1,7 @@
 #!/bin/env python
 import requests
 
-url = "http://localhost:5000/infer"
+url = "http://mfurquim-ml-fastapi.herokuapp.com/infer"
 
 headers = {
     "accept": "application/json",
@@ -33,4 +33,5 @@ response = requests.post(
 )
 
 # response.raise_for_status()
+print(response.status_code)
 print(response.json())
