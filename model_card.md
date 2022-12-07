@@ -40,6 +40,11 @@ After running the `pandas_profiling` in the data, the following imbalances were 
 - Almost 90% of `native-country` is `United-States`.
 - At last, there is also an imbalance on `salary` category, which ~76% is `<=50K` and ~24% is `>50K`.
 
+According to [populationpyramid.net](https://www.populationpyramid.net/united-states-of-america/1994/), the percentage
+of males older than 19 years old is 48.26%.
+The percentage of males in the data is ~67%.
+Which means the data have an imbalance regarding the sex.
+
 ## Metrics
 
 After training the model, the test set was used to calculate precision, recall and fbeta metrics.
@@ -47,10 +52,20 @@ The precision is 0.751. The recall is 0.615. And the fbeta is 0.676.
 
 There's more metrics for each data slice on [slice_output.txt](slice_output.txt).
 
+## Ethical Considerations
+
+Artificial Intelligence models are only able to learn what is being given as input.
+If the sample data is not a good representative of the total population and the features doesn't fully describe the
+phenomena that's being predicted, then it will be flawed in some way.
+
+Keeping in mind that there is a large disproportion in most categorical features.
+The female in sex category, non-native people, as well as non-white race are poorly represented in the data.
+Therefore the results for these groups in particular should be carefully
+
 ## Caveats and Recommendations
 
-There is a huge imbalance on the `native-country` category.
-It would probably help if there were more data with values other than `United-States`.
+As demonstrated in the sections above, the categories sex, native-country, and race contains a huge imbalance.
+Having more data would help train a better model which would be able to predict with more accuracy these groups.
 
 ## Attribute Information
 
